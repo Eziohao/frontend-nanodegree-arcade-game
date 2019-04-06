@@ -23,9 +23,11 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
+        count=0;
 
     canvas.width = 505;
     canvas.height = 606;
+
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
@@ -79,9 +81,33 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+        checkWin();
     }
 
+    function checkCollisions(){
+        let playerLocation=player.currentLocation();
+        if(playerLocation.x<0||playerLocation.x>=500||playerLocation.y>=400){
+            player=new Player();
+        }
+       //console.log(playerLocation)
+        for(let enemy of allEnemies){
+            let enemyLocation=enemy.currentLocation();
+            if(enemyLocation.y==playerLocation.y&&(enemyLocation.x>=playerLocation.x&&playerLocation.x>=(enemyLocation.x-enemyLocation.speed))){
+                player=new Player();
+                break;
+            }
+            
+        }
+    }
+    function checkWin(){
+        let playerLocation=player.currentLocation();
+        if(playerLocation.y<60){
+            count++;
+            player=new Player();
+            alert("You Win! Score "+count )
+        }
+    }
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
@@ -94,6 +120,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    
     }
 
     /* This function initially draws the "game level", it will then call
@@ -161,6 +188,7 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
+        //init();
         // noop
     }
 

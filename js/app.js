@@ -10,7 +10,7 @@ class Enemy {
         let YMax=2;
         this.x = x;
         this.y = postionYArray[Math.floor(Math.random()*(YMax+1))];
-        let max=10;
+        let max=5;
         let min=3;
         this.speed=Math.floor(Math.random()*(max-min+1)+min);
     }
@@ -33,6 +33,14 @@ class Enemy {
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+    currentLocation(){
+        let location={
+            'x':this.x,
+            'y':this.y,
+            'speed':this.speed
+        }
+        return location
+    }
 }
 
 
@@ -44,7 +52,7 @@ class Player {
     constructor() {
         this.sprite = 'images/char-boy.png';
         this.x = 200;
-        this.y = 353;
+        this.y = 300;
         this.moveX=0;
         this.moveY=0;
     }
@@ -55,13 +63,13 @@ class Player {
        this.moveY=0;
     }
     handleInput(keyCode){
-        console.log(keyCode)
+        //console.log(keyCode)
         switch(keyCode){
             case 'left':
-                this.moveX=80;
+                this.moveX=100;
                 break
             case 'right':
-               this.moveX=-80;
+               this.moveX=-100;
                break
             case 'up':
                this.moveY=80;
@@ -73,6 +81,13 @@ class Player {
     }
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+    currentLocation(){
+        let location={
+            'x':this.x,
+            'y':this.y
+        }
+        return location
     }
 }
 let allEnemies=[new Enemy(),new Enemy(),new Enemy(),new Enemy(),new Enemy(),new Enemy(),new Enemy()];
